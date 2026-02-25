@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-wallet"></i> Presupuesto Mensual</h1>
+                <div class="mes-controls">
+                    <select id="mesSelect">
+                        <option value="">Seleccionar mes...</option>
+                    </select>
+                    <button class="btn-primary" onclick="cargarMes()">
+                        <i class="fas fa-sync-alt"></i> Cargar
+                    </button>
+                    <button class="btn-secondary" onclick="nuevoMes()">
+                        <i class="fas fa-plus"></i> Nuevo mes
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Cards (principales KPIs) -->
+        <section class="stats-grid" id="statsGrid" style="display: none;">
+            <div class="stat-card positive">
+                <div class="stat-icon"><i class="fas fa-arrow-trend-up"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Ingresos reales</span>
+                    <div class="stat-value" id="ingresos-real">-</div>
+                </div>
+            </div>
+            <div class="stat-card negative">
+                <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Gastos reales</span>
+                    <div class="stat-value" id="gastos-real">-</div>
+                </div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-piggy-bank"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Saldo actual</span>
+                    <div class="stat-value big" id="saldo-real">-</div>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Cumplimiento del 50/30/20</span>
+                    <div class="stat-value" id="progreso-ahorro">0%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Resumen comparativo -->
+            <section class="comparison-card" id="comparisonCard" style="display: none;">
+                <div class="card-header">
+                    <h2><i class="fas fa-balance-scale"></i> balance Previsto</h2>
+                </div>
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <span>Ingresos previstos para este mes</span>
+                        <span class="money" id="ingresos-previsto">-</span>
+                    </div>
+                    <div class="comparison-item">
+                        <span>Gastos previstos para este mes</span>
+                        <span class="money" id="gastos-previsto">-</span>
+                    </div>
+                    <div class="comparison-item highlight">
+                        <span>Saldo restante para este mes</span>
+                        <span class="money" id="saldo-previsto">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Panel de ingresos -->
+            <section class="income-panel" id="incomePanel" style="display: none;">
+                <div class="card-header">
+                    <h2><i class="fas fa-money-bill-wave"></i> Registro de Ingresos</h2>
+                </div>
+                <div class="income-grid">
+                    <div class="input-group">
+                        <label for="ingreso-previsto">Ingreso previsto (€)</label>
+                        <input type="number" step="0.01" id="ingreso-previsto" placeholder="2500.00">
+                    </div>
+                    <div class="input-group">
+                        <label for="ingreso-real">Ingreso real (€)</label>
+                        <input type="number" step="0.01" id="ingreso-real" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="btn-container">
+                    <button class="btn-primary" onclick="guardarIngresos()">
+                        <i class="fas fa-save"></i> Guardar y actualizar
+                    </button>
+                </div>
+            </section>
+
+
+
+            <!-- Gastos por categorías (Cards modernas) -->
+            <section class="expenses-section" id="expensesSection" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-credit-card"></i> Gastos por categoría</h2>
+                    <div class="legend">
+                        <span class="legend-item"><i class="fas fa-euro-sign"></i> Previsto</span>
+                        <span class="legend-item"><i class="fas fa-receipt"></i> Real</span>
+                    </div>
+                </div>
+                <div class="expenses-grid" id="expensesGrid"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
