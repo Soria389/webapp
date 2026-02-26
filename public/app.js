@@ -314,5 +314,74 @@ async function nuevoMes() {
     }
 }
 
+// === FUNCIONES PARA ELIMINAR MES ===
+
+async function eliminaMes() {
+    try {
+        const response = await fetch('/api/meses');
+        const meses = await response.json();
+
+        const select = document.getElementById('mesEliminarSelect');
+        select.innerHTML = '';
+
+        if (meses.length === 0) {
+            alert('No hay meses para eliminar');
+            return;
+        }
+
+        meses.forEach(mes => {
+            const option = document.createElement('option');
+            option.value = mes.id;
+            option.textContent = mes.nombre_mes;
+            select.appendChild(option);
+        });
+
+        document.getElementById('modalEliminar').style.display = 'flex';
+    } catch (error) {
+        console.error('Error cargando meses para eliminar:', error);
+    }
+}
+
+function cerrarModalEliminar() {
+    document.getElementById('modalEliminar').style.display = 'none';
+}
+
+async function confirmarEliminarMes() {
+    const mesId = document.getElementById('mesEliminarSelect').value;
+    const mesNombre = document.getElementById('mesEliminarSelect').options[document.getElementById('mesEliminarSelect').selectedIndex].text;
+
+    if (!confirm(`¿Estás seguro de que quieres eliminar el mes "${mesNombre}"? Esta acción borrará todos los ingresos y gastos asociados.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/meses/${mesId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert('✅ Mes eliminado correctamente');
+            cerrarModalEliminar();
+
+            // Si el mes que borramos es el actual, limpiamos el dashboard
+            if (mesId == mesActual) {
+                mesActual = null;
+                document.getElementById('statsGrid').style.display = 'none';
+                document.getElementById('comparisonCard').style.display = 'none';
+                document.getElementById('incomePanel').style.display = 'none';
+                document.getElementById('expensesSection').style.display = 'none';
+            }
+
+            await cargarMeses(); // Recargar el select principal
+        } else {
+            const error = await response.json();
+            alert('❌ Error: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error eliminando mes:', error);
+        alert('Error al eliminar el mes');
+    }
+}
+
 
 

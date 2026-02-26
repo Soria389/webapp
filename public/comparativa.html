@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto - Comparativa</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-chart-bar"></i> Comparativa de Meses</h1>
+                <div class="mes-controls">
+                    <button class="btn-secondary" onclick="window.location.href='index.html'">
+                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="expenses-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-clock"></i> Resumen Histórico</h2>
+                    <div class="legend">
+                        <span class="legend-item"><i class="fas fa-shopping-cart"></i> Gasto Real</span>
+                        <span class="legend-item"><i class="fas fa-piggy-bank"></i> Saldo Restante</span>
+                    </div>
+                </div>
+                <div class="expenses-grid" id="comparativaGrid">
+                    <!-- Los meses se cargarán aquí -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="comparativa.js"></script>
+</body>
+
+</html>

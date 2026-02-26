@@ -196,6 +196,47 @@ class Database {
     });
   }
 
+  // Obtener resumen de todos los meses para la comparativa
+  getResumenComparativo() {
+    return new Promise((resolve, reject) => {
+      this.db.all(`
+        SELECT 
+          m.id,
+          m.nombre_mes,
+          m.anio,
+          m.mes_numero,
+          (SELECT COALESCE(SUM(monto), 0) FROM ingresos WHERE mes_id = m.id AND tipo = 'real') as total_ingresos_real,
+          (SELECT COALESCE(SUM(costo_real), 0) FROM gastos WHERE mes_id = m.id) as total_gastos_real
+        FROM meses m
+        ORDER BY m.anio ASC, m.mes_numero ASC
+      `, [], (err, rows) => {
+        if (err) return reject(err);
+
+        // Calcular saldo real para cada mes
+        const results = rows.map(row => ({
+          ...row,
+          saldo_real: row.total_ingresos_real - row.total_gastos_real
+        }));
+
+        resolve(results);
+      });
+    });
+  }
+
+  // Eliminar un mes y todos sus datos relacionados (gracias al ON DELETE CASCADE)
+  deleteMes(id) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        `DELETE FROM meses WHERE id = ?`,
+        [id],
+        function (err) {
+          if (err) reject(err);
+          else resolve({ changes: this.changes });
+        }
+      );
+    });
+  }
+
   // Cerrar conexión
   close() {
     if (this.db) {

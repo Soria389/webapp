@@ -33,6 +33,18 @@ app.post('/api/meses', async (req, res) => {
   }
 });
 
+app.delete('/api/meses/:id', async (req, res) => {
+  try {
+    const result = await db.deleteMes(req.params.id);
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Mes no encontrado' });
+    }
+    res.json({ message: 'Mes eliminado correctamente' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ===== RUTAS DE INGRESOS =====
 app.get('/api/ingresos/:mesId', async (req, res) => {
   try {
@@ -78,6 +90,15 @@ app.get('/api/resumen/:mesId', async (req, res) => {
   try {
     const resumen = await db.getResumenMes(req.params.mesId);
     res.json(resumen);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/comparativa', async (req, res) => {
+  try {
+    const comparativa = await db.getResumenComparativo();
+    res.json(comparativa);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
